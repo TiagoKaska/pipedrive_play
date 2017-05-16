@@ -1,5 +1,6 @@
 import javax.inject.*;
 import play.*;
+import play.filters.cors.CORSFilter;
 import play.mvc.EssentialFilter;
 import play.http.HttpFilters;
 import play.mvc.*;
@@ -20,6 +21,8 @@ public class Filters implements HttpFilters {
 
     private final Environment env;
     private final EssentialFilter exampleFilter;
+    @Inject
+    CORSFilter corsFilter;
 
     /**
      * @param env Basic environment settings for the current application.
@@ -37,9 +40,9 @@ public class Filters implements HttpFilters {
       // we're running in production or test mode then don't use any
       // filters at all.
       if (env.mode().equals(Mode.DEV)) {
-          return new EssentialFilter[] { exampleFilter };
+          return new EssentialFilter[] { corsFilter.asJava()  };
       } else {
-         return new EssentialFilter[] {};
+         return new EssentialFilter[] {corsFilter.asJava() };
       }
     }
 
