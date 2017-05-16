@@ -1,0 +1,24 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+GET     /                           controllers.HomeController.index
+# An example controller showing how to use dependency injection
+GET     /count                      controllers.CountController.count
+# An example controller showing how to write asynchronous code
+GET     /message                    controllers.AsyncController.message
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+# list
+GET /api/v1/carro/list              v1.carro.CarroController.list
+# create
+POST /api/v1/carro                  v1.carro.CarroController.create
+# show
+GET /api/v1/carro/:id               v1.carro.CarroController.show(id:Int)
+# update
+POST /api/v1/carro/:id              v1.carro.CarroController.update(id:Int)
+# delete
+DELETE  /api/v1/carro/:id           v1.carro.CarroController.delete(id:Int)
+
