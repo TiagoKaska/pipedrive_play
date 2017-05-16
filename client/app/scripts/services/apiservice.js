@@ -22,8 +22,16 @@ angular.module('clientApp')
          });
     };
 
+    var _getListCars = function(){
+      return $http.get(url + 'v1/carro/list')
+        .then( function( response ) {
+          return response
+        });
+    };
+
     return {
-      create : _create
+      create : _create,
+      getListCars : _getListCars
     }
 
   });

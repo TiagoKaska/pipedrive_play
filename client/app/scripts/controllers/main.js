@@ -12,18 +12,37 @@ angular.module('clientApp')
   
     $scope.persons = []
     $scope.showFormCarro = false
-    $scope.errorMessage=""
-    $scope.errorForm=false
+    $scope.errorMessage = ""
+    $scope.errorForm = false
     $scope.salvarCarro = salvarCarro
     $scope.criarCarro = criarCarro
+    $scope.seleciona = seleciona
+    $scope.listCars = []
 
+    getListCars()
+
+    function getListCars() {
+      apiService.getListCars().then( function ( response ) {
+        if(response.status == 200 && response.data.body.length > 0)
+          $scope.listCars = angular.copy(response.data.body)
+      })
+    }
+
+    function seleciona(car){
+      console.log('carro selecionado ')
+      console.log(car)
+      car['ano'] = Number(car.ano)
+      $scope.carroSelecionado = angular.copy(car)
+      $scope.showFormCarro = true
+    }
 
     function criarCarro() {
       $scope.showFormCarro = true
-      $scope.novoCarro = {}
+      $scope.carroSelecionado = {}
       pipedriveService.getAllPersons($scope.token).then(function (response) {
         if (response.status == 200) {
           $scope.persons = angular.copy(response.data.data)
+          getListCars()
         }
       }, function (error) {
         console.log('error ')
