@@ -38,10 +38,21 @@ angular.module('clientApp')
          });
     };
 
+    var _delete = function( carro ) {
+        
+       return $http.delete(url + 'v1/carro/' + carro.id, {headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }})
+        .then(function ( response ) {
+           return response
+         });
+    };
+
     return {
       create : _create,
       getListCars : _getListCars,
-      update: _update
+      update: _update,
+      delete: _delete
     }
 
   });

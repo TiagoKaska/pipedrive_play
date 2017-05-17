@@ -56,8 +56,11 @@
           <div class="col-sm-offset-2 col-sm-10">
             <button type="submit" class="btn btn-default" ng-disabled="carForm.$invalid" ng-click="salvarCarro(carroSelecionado)">Salvar</button>
           </div>
+          <div class="col-sm-offset-2 col-sm-10" ng-show="showExcluir">
+            <button type="submit" class="btn btn-default" ng-click="excluirCarro(carroSelecionado)">Excluir</button>
+          </div>
         </div>
-
+          
       </form>
 
 

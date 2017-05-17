@@ -17,7 +17,10 @@ angular.module('clientApp')
     $scope.salvarCarro = salvarCarro
     $scope.criarCarro = criarCarro
     $scope.seleciona = seleciona
+    $scope.excluirCarro = excluirCarro
     $scope.listCars = []
+    $scope.showExcluir = false
+
 
     getListCars()
 
@@ -35,6 +38,7 @@ angular.module('clientApp')
       getListPersons(car.idPerson)
       //getPersonById(car.idPerson)
       $scope.showFormCarro = true
+      $scope.showExcluir = true
     }
 
     function getPersonById(id) {
@@ -44,11 +48,14 @@ angular.module('clientApp')
           $scope.persons.push(angular.copy(response.data.data))
           //$scope.person = response.data.data
         }
+      }, function (error) {
+        console.log(error)
       })
 
     }
 
     function criarCarro() {
+      $scope.showExcluir = false
       $scope.showFormCarro = true
       $scope.carroSelecionado = {}
       getListPersons()
@@ -72,6 +79,12 @@ angular.module('clientApp')
       }, function (error) {
         console.log('error ')
         console.log(error.data.error)
+        /*
+        swal(
+          'Oops...',
+          error.data.error,
+          'error'
+        )*/
       })
     }
 
@@ -85,24 +98,69 @@ angular.module('clientApp')
         if (undefined == carro.id) {
           apiService.create(carro).then(function (response) {
             console.log(response)
+            if (response.status == 201) {
+              swal({
+                title: 'Bom Trabalho!',
+                text: "Carro criado com sucesso!",
+                type: 'success',
+
+              }).then(function () {
+                window.location.reload()
+              })
+
+            }
           }, function (error) {
             console.log(error)
           })
         } else {
-          apiService.update(carro).then(function ( response ) {
+          apiService.update(carro).then(function (response) {
+            if (response.status == 200) {
+              swal({
+                title: 'Bom Trabalho!',
+                text: "Carro atualizado com sucesso!",
+                type: 'success',
+
+              }).then(function () {
+                window.location.reload()
+              })
+
+            }
             console.log(response)
           }, function (error) {
             console.log(error)
+
           })
-          
+
         }
 
 
       } else {
         $scope.errorForm = true
       }
+    }
 
+    function excluirCarro(carro) {
+      apiService.delete(carro).then(function (response) {
+        console.log(response)
+        if (response.status == 200) {
+          swal({
+            title: 'Bom Trabalho!',
+            text: response.data.body,
+            type: 'success',
 
+          }).then(function () {
+            window.location.reload()
+          })
+        }
+
+      }, function (erro) {
+        console.log(erro)
+        swal(
+          'Oops...',
+          error.data.body,
+          'error'
+        )
+      })
     }
 
     function carroIsValid(carro) {
