@@ -9,7 +9,7 @@
  */
 angular.module('clientApp')
   .controller('MainCtrl', function ($scope, $http, pipedriveService, apiService) {
-  
+    
     $scope.persons = []
     $scope.showFormCarro = false
     $scope.errorMessage = ""
@@ -25,30 +25,61 @@ angular.module('clientApp')
       apiService.getListCars().then( function ( response ) {
         if(response.status == 200 && response.data.body.length > 0)
           $scope.listCars = angular.copy(response.data.body)
+          //$scope.$apply($scope.listCars)
       })
     }
 
     function seleciona(car){
-      console.log('carro selecionado ')
-      console.log(car)
       car['ano'] = Number(car.ano)
       $scope.carroSelecionado = angular.copy(car)
+      getListPersons(car.idPerson)
+      //getPersonById(car.idPerson)
       $scope.showFormCarro = true
+    }
+
+    function getPersonById(id){
+      
+      pipedriveService.getPersonById(id, $scope.token).then( function (response ) {
+        if(response.status == 200){
+          $scope.persons.push(angular.copy(response.data.data))
+          //$scope.person = response.data.data
+        }
+      })
+      
     }
 
     function criarCarro() {
       $scope.showFormCarro = true
       $scope.carroSelecionado = {}
+      getListPersons()
+    }
+
+    function getListPersons(idPerson){
+
       pipedriveService.getAllPersons($scope.token).then(function (response) {
         if (response.status == 200) {
           $scope.persons = angular.copy(response.data.data)
+          if(undefined != idPerson){
+            angular.forEach($scope.persons, function( value, key ){
+            if(value.id == idPerson){
+              $scope.person = $scope.persons[key]
+              return false
+            } 
+            })
+          }
+           
+
           getListCars()
         }
       }, function (error) {
         console.log('error ')
         console.log(error.data.error)
       })
+
     }
+
+
+
     function salvarCarro(carro) {
       $scope.errorMessage=""
       $scope.errorForm=false

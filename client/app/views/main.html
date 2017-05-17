@@ -23,7 +23,8 @@
         <div class="form-group">
           <label for="tipoFrete" class="col-sm-2 ">Responsável</label>
           <div class="col-sm-10">
-            <select class="form-control" name="person" ng-model="person" ng-options="person.name for person in persons">
+           
+            <select class="form-control" name="person" ng-model="person" ng-options="person.name for person in persons track by person.id">
             
           </select>
           </div>

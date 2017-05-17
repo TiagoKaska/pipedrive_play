@@ -21,7 +21,8 @@ angular.module('clientApp')
 
     //https://api.pipedrive.com/v1/persons/1/flow?start=0&api_token=
     var _getPersonById = function (id, token) {
-      return $http.get(pipedriveApi + 'persons/'+ id +'/flow?start=0&api_token=' + token)
+      console.log('getById ' + token) 
+      return $http.get(pipedriveApi + 'persons/'+ id +'/?start=0&api_token=' + token)
         .then(function ( response ) {
            return response
          });
