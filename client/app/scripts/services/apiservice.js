@@ -29,9 +29,19 @@ angular.module('clientApp')
         });
     };
 
+    var _update= function( carro ){
+       return $http.post(url + 'v1/carro/' + carro.id, carro, {headers: {
+            'Content-Type': 'application/json; charset=utf-8'
+        }})
+        .then(function ( response ) {
+           return response
+         });
+    };
+
     return {
       create : _create,
-      getListCars : _getListCars
+      getListCars : _getListCars,
+      update: _update
     }
 
   });
